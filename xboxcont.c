@@ -8,12 +8,12 @@ void processDirection(unsigned char data) {
     ts.tv_nsec = 500000000; // 纳秒（0.5秒）
 
 
-    if (data == '00') {
+    if (data == 0x00) {
         printf("data[2] is '00'\n");
     } else {
         // 如果不是 '00'，进入 switch 语句处理其它情况
         printf("now we have: ");
-        printf(data);
+        printf("%02x \n", data);
         switch (data) {
             case 0x01:  // 十六进制的 1
                 printf("got '01'\n");
