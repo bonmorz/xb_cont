@@ -1,6 +1,15 @@
 #include <stdio.h>
 #include <libusb-1.0/libusb.h>
 
+
+void printInput(unsigned char arr[], int size) {
+    printf("Successful read: ");
+    for (int i = 0; i < size; ++i) {
+        printf("%02x ", arr[i]);
+    }
+    printf("\n");
+}
+
 int main() {
     libusb_device **devs; //
     libusb_context *ctx = NULL; //
@@ -64,11 +73,14 @@ int main() {
         // 使用libusb_bulk_transfer读取数据
         rr = libusb_interrupt_transfer(handle, endpoint_address, data, sizeof(data), &actual_length, timeout);
         if (rr == 0) {
-            printf("read success: ");
-            for (int i = 0; i < actual_length; ++i) {
-                printf("%02x ", data[i]);
-            }
-            printf("\n");
+            //printf("read success: ");
+            //we can read our input from here, and show the information when we pressed
+            //for (int i = 0; i < actual_length; ++i) {
+            //    printf("%02x ", data[i]);
+            //}
+            //printf("\n");
+
+            printInput(data,actual_length);
         } else {
             fprintf(stderr, "fail to read: %d\n", r);
             break; //�

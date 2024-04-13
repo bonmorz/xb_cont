@@ -1,0 +1,16 @@
+1.the length of the data is 20
+2.data[2]: shows the press of the direction button:top:01 right:08 down:02 left:04
+3.data[3]: Y:80 B:20 A:10 X:40 LB:01 RB:02
+4.left rotate: data[6:9]: still under reverse engineering,maybe not use them: 
+    left:00 80 00 00 
+    right: ff 7f 00 00
+    up: 00 00 ff 7f
+    down: 00 00 00 80
+5.right rotate: data[10:13]:
+    left:00 80 00 00
+    right: ff 7f 00 00
+    up:00 00 ff 7f
+    down: 00 00 00 80
+
+6. data[4]: LT:FF
+7. data[5]: RT:FF
