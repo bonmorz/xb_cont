@@ -10,7 +10,7 @@ TARGET = xboxcont
 all: $(TARGET)
 
 $(TARGET): xboxcont.c
-    $(CC) $(CFLAGS) -o $(TARGET) xboxcont.c $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $(TARGET) xboxcont.c $(LDFLAGS)
 
 clean:
-    rm -f $(TARGET)
+	rm -f $(TARGET)

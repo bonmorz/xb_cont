@@ -29,7 +29,9 @@ int main() {
         struct libusb_device_descriptor desc;
         libusb_get_device_descriptor(device, &desc);
 
-        if (desc.idVendor == 0x045e && desc.idProduct == 0x0b12) {
+
+        //4.13:028e is the pid of beitong controller
+        if (desc.idVendor == 0x045e && desc.idProduct == 0x028e) {
             printf("find Xbox ：VID 0x%04x, PID 0x%04x\n", desc.idVendor, desc.idProduct);
             //
             r = libusb_open(devs[i], &handle);
@@ -37,19 +39,30 @@ int main() {
                 fprintf(stderr, "fail to open xbox\n");
                 continue;
             } else{
-               printf("success open xbox controller");
+                printf("success open xbox controller");
+
+                //try to detatch kernel driver
+                if (libusb_kernel_driver_active(handle, 0) == 1) { 
+                    r = libusb_detach_kernel_driver(handle, 0);
+                    if (r == 0) {
+                        printf("Kernel Driver Detached\n");
+                    } else {
+                        fprintf(stderr, "Error detaching kernel driver: %d\n", r);
+                    }
+                }
+
             } 
         }
     }
         
     unsigned char endpoint_address = 0x82; // 端点地址
-    unsigned char data[4096]; // 数据缓冲区
+    unsigned char data[64]; // 数据缓冲区
     int actual_length; // 实际读取的数据长度
     int timeout = 5000; // 超时时间，以毫秒为单位
 
     while (1) {
         // 使用libusb_bulk_transfer读取数据
-        rr = libusb_bulk_transfer(handle, endpoint_address, data, sizeof(data), &actual_length, timeout);
+        rr = libusb_interrupt_transfer(handle, endpoint_address, data, sizeof(data), &actual_length, timeout);
         if (rr == 0) {
             printf("read success: ");
             for (int i = 0; i < actual_length; ++i) {
