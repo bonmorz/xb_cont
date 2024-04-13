@@ -1,12 +1,51 @@
 #include <stdio.h>
 #include <libusb-1.0/libusb.h>
+#include <time.h> 
+
+void processDirection(unsigned char data) {
+    struct timespec ts;
+    ts.tv_sec = 0;          // 秒
+    ts.tv_nsec = 500000000; // 纳秒（0.5秒）
+
+
+    if (data == '00') {
+        printf("data[2] is '00'\n");
+    } else {
+        // 如果不是 '00'，进入 switch 语句处理其它情况
+        printf("now we have: ");
+        printf(data);
+        switch (data) {
+            case 0x01:  // 十六进制的 1
+                printf("got '01'\n");
+                nanosleep(&ts, NULL);   // sleep 0.5s
+                break;
+            case 0x08:  // 十六进制的 8
+                printf("got '08'\n");
+                nanosleep(&ts, NULL);   // sleep 0.5s
+                break;
+            case 0x02:  // 十六进制的 2
+                printf("got '02'\n");
+                nanosleep(&ts, NULL);   // sleep 0.5s
+                break;
+            case 0x04:  // 十六进制的 4
+                printf("got '04'\n");
+                nanosleep(&ts, NULL);   // sleep 0.5s
+                break;
+            default:
+                printf("未知的值\n");
+                break;
+        }
+    }
+}
 
 
 void printInput(unsigned char arr[], int size) {
     printf("Successful read: ");
-    for (int i = 0; i < size; ++i) {
-        printf("%02x ", arr[i]);
+    //read direction input data[2]: up:01 r:08 d:02 l:04
+    if (arr[2] != 0x00) {
+        processDirection(arr[2]);
     }
+
     printf("\n");
 }
 
