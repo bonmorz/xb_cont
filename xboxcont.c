@@ -3,70 +3,90 @@
 #include <time.h> 
 #include <unistd.h>
 
+#define SLEEP 1
+
 int globalX = 5;
 int globalY = 5;
 
+
 void processDirection(unsigned char data) {
+    int twiceTest=1;
+
     if (data == 0x00) {
         printf("data[2] is '00'\n");
     } else {
-        // 如果不是 '00'，进入 switch 语句处理其它情况
-        switch (data) {
-            case 0x01:  // up
-                printf("got '01'\n");
-                globalY = globalY+1;
-                printf("The value of the coordinate is: %d %d\n", globalX,globalY); 
-                sleep(1);   // sleep 1s
-                break;
-            case 0x08:  // right
-                printf("got '08'\n");
-                globalX = globalX+1;
-                printf("The value of the coordinate is: %d %d\n", globalX,globalY); 
-                sleep(1);   // sleep 1s
-                break;
-            case 0x02:  // down
-                printf("got '02'\n");
-                globalY = globalY-1;
-                printf("The value of the coordinate is: %d %d\n", globalX,globalY);
-                sleep(1);   // sleep 1s
-                break;
-            case 0x04:  // left
-                printf("got '04'\n");
-                globalX = globalX-1;
-                printf("The value of the coordinate is: %d %d\n", globalX,globalY);
-                sleep(1);   // sleep 1s
-                break;
-            default:
-                printf("unknoWN\n");
-                break;
+        if (twiceTest==1){
+            twiceTest=0;
+            switch (data) {
+                case 0x01:  // up
+                    printf("got '01'\n");
+                    globalY = globalY+1;
+                    printf("The value of the coordinate is: %d %d\n", globalX,globalY); 
+                    sleep(SLEEP);   // sleep 1s
+                    break;
+                case 0x08:  // right
+                    printf("got '08'\n");
+                    globalX = globalX+1;
+                    printf("The value of the coordinate is: %d %d\n", globalX,globalY); 
+                    sleep(SLEEP);   // sleep 1s
+                    break;
+                case 0x02:  // down
+                    printf("got '02'\n");
+                    globalY = globalY-1;
+                    printf("The value of the coordinate is: %d %d\n", globalX,globalY);
+                    sleep(SLEEP);   // sleep 1s
+                    break;
+                case 0x04:  // left
+                    printf("got '04'\n");
+                    globalX = globalX-1;
+                    printf("The value of the coordinate is: %d %d\n", globalX,globalY);
+                    sleep(SLEEP);   // sleep 1s
+                    break;
+                default:
+                    printf("unknoWN\n");
+                    break;
+            }
+
+        }else{
+            //twiceTest此时等于0
+            twiceTest=1;
         }
+        // 如果不是 '00'，进入 switch 语句处理其它情况
+
     }
 }
 
 void processFunction(unsigned char data){
     //data[3]: Y:80 B:20 A:10 X:40 LB:01 RB:02
+    int twiceTestFunc=1;
+    if (twiceTestFunc==1){
+        twiceTestFunc=0;
         switch (data) {
             case 0x80:  // Y
                 printf("got Y\n");
-                sleep(1);   // sleep 1s
+                sleep(SLEEP);   // sleep 1s
                 break;
             case 0x20:  // B
                 printf("got B\n");
-                sleep(1);   // sleep 1s
+                sleep(SLEEP);   // sleep 1s
                 break;
             case 0x10:  // A
                 printf("got A\n");
                 printf("Send coordinate to AI: %d %d\n", globalX,globalY);
-                sleep(1);   // sleep 1s
+                sleep(SLEEP);   // sleep 1s
                 break;
             case 0x40:  // X
                 printf("got X\n");
-                sleep(1);   // sleep 1s
+                sleep(SLEEP);   // sleep 1s
                 break;
             default:
                 printf("unknoWN\n");
                 break;
         }    
+    }else{
+        twiceTestFunc=1;
+    }
+
 
 }
 
@@ -137,20 +157,17 @@ int main() {
     }
         
     unsigned char endpoint_address = 0x81; // endpoint set to 0x81
-    unsigned char data[64]; // 数据缓冲区
+    unsigned char data[20]; // 数据缓冲区
     int actual_length; // 实际读取的数据长度
     int timeout = 5000; // 超时时间，以毫秒为单位
 
     while (1) {
         // 使用libusb_bulk_transfer读取数据
+        // actually we keep reading this even if we have no input
+        // 
         rr = libusb_interrupt_transfer(handle, endpoint_address, data, sizeof(data), &actual_length, timeout);
         if (rr == 0) {
-            //printf("read success: ");
-            //we can read our input from here, and show the information when we pressed
-            //for (int i = 0; i < actual_length; ++i) {
-            //    printf("%02x ", data[i]);
-            //}
-            //printf("\n");
+            //so we will keep use printInput
 
             printInput(data,actual_length);
         } else {
