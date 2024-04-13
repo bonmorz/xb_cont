@@ -3,28 +3,37 @@
 #include <time.h> 
 #include <unistd.h>
 
+int globalX = 5;
+int globalY = 5;
+
 void processDirection(unsigned char data) {
-
-
     if (data == 0x00) {
         printf("data[2] is '00'\n");
     } else {
         // 如果不是 '00'，进入 switch 语句处理其它情况
         switch (data) {
-            case 0x01:  // 十六进制的 1
+            case 0x01:  // up
                 printf("got '01'\n");
+                globalY = globalY+1;
+                printf("The value of the coordinate is: %d %d\n", globalX,globalY); 
                 sleep(1);   // sleep 1s
                 break;
-            case 0x08:  // 十六进制的 8
+            case 0x08:  // right
                 printf("got '08'\n");
+                globalX = globalX+1;
+                printf("The value of the coordinate is: %d %d\n", globalX,globalY); 
                 sleep(1);   // sleep 1s
                 break;
-            case 0x02:  // 十六进制的 2
+            case 0x02:  // down
                 printf("got '02'\n");
+                globalY = globalY-1;
+                printf("The value of the coordinate is: %d %d\n", globalX,globalY);
                 sleep(1);   // sleep 1s
                 break;
-            case 0x04:  // 十六进制的 4
+            case 0x04:  // left
                 printf("got '04'\n");
+                globalX = globalX-1;
+                printf("The value of the coordinate is: %d %d\n", globalX,globalY);
                 sleep(1);   // sleep 1s
                 break;
             default:
@@ -34,11 +43,42 @@ void processDirection(unsigned char data) {
     }
 }
 
+void processFunction(unsigned char data){
+    //data[3]: Y:80 B:20 A:10 X:40 LB:01 RB:02
+        switch (data) {
+            case 0x80:  // Y
+                printf("got Y\n");
+                sleep(1);   // sleep 1s
+                break;
+            case 0x20:  // B
+                printf("got B\n");
+                sleep(1);   // sleep 1s
+                break;
+            case 0x10:  // A
+                printf("got A\n");
+                printf("Send coordinate to AI: %d %d\n", globalX,globalY);
+                sleep(1);   // sleep 1s
+                break;
+            case 0x40:  // X
+                printf("got X\n");
+                sleep(1);   // sleep 1s
+                break;
+            default:
+                printf("unknoWN\n");
+                break;
+        }    
+
+}
+
+
 
 void printInput(unsigned char arr[], int size) {
     //read direction input data[2]: up:01 r:08 d:02 l:04
     if (arr[2] != 0x00) {
         processDirection(arr[2]);
+    }
+    if (arr[3] != 0x00){
+        processFunction(arr[3]);
     }
 }
 
