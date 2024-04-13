@@ -7,16 +7,21 @@
 
 int globalX = 5;
 int globalY = 5;
+int eraseDouble=1;
 
 
 void processDirection(unsigned char data) {
-    int twiceTest=1;
 
     if (data == 0x00) {
         printf("data[2] is '00'\n");
     } else {
-        if (twiceTest==1){
-            twiceTest=0;
+            if (eraseDouble==1){
+                eraseDouble=0;
+            }else{
+                eraseDouble=1;
+                return;
+            }
+       
             switch (data) {
                 case 0x01:  // up
                     printf("got '01'\n");
@@ -45,12 +50,7 @@ void processDirection(unsigned char data) {
                 default:
                     printf("unknoWN\n");
                     break;
-            }
-
-        }else{
-            //twiceTest此时等于0
-            twiceTest=1;
-        }
+            }       
         // 如果不是 '00'，进入 switch 语句处理其它情况
 
     }
@@ -58,9 +58,14 @@ void processDirection(unsigned char data) {
 
 void processFunction(unsigned char data){
     //data[3]: Y:80 B:20 A:10 X:40 LB:01 RB:02
-    int twiceTestFunc=1;
-    if (twiceTestFunc==1){
-        twiceTestFunc=0;
+        if (eraseDouble==1){
+                eraseDouble=0;
+            }else{
+                eraseDouble=1;
+                return;
+            }
+    
+        
         switch (data) {
             case 0x80:  // Y
                 printf("got Y\n");
@@ -83,9 +88,7 @@ void processFunction(unsigned char data){
                 printf("unknoWN\n");
                 break;
         }    
-    }else{
-        twiceTestFunc=1;
-    }
+    
 
 
 }
@@ -94,6 +97,7 @@ void processFunction(unsigned char data){
 
 void printInput(unsigned char arr[], int size) {
     //read direction input data[2]: up:01 r:08 d:02 l:04
+
     if (arr[2] != 0x00) {
         processDirection(arr[2]);
     }
@@ -160,6 +164,7 @@ int main() {
     unsigned char data[20]; // 数据缓冲区
     int actual_length; // 实际读取的数据长度
     int timeout = 5000; // 超时时间，以毫秒为单位
+
 
     while (1) {
         // 使用libusb_bulk_transfer读取数据
