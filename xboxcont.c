@@ -55,7 +55,7 @@ int main() {
         }
     }
         
-    unsigned char endpoint_address = 0x82; // 端点地址
+    unsigned char endpoint_address = 0x81; // endpoint set to 0x81
     unsigned char data[64]; // 数据缓冲区
     int actual_length; // 实际读取的数据长度
     int timeout = 5000; // 超时时间，以毫秒为单位
@@ -71,7 +71,7 @@ int main() {
             printf("\n");
         } else {
             fprintf(stderr, "fail to read: %d\n", r);
-            break; //�
+            break; //�
         }
     }
     
