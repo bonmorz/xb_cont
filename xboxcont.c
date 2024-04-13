@@ -13,19 +13,19 @@ void processDirection(unsigned char data) {
         switch (data) {
             case 0x01:  // 十六进制的 1
                 printf("got '01'\n");
-                sleep(1);   // sleep 0.5s
+                sleep(1);   // sleep 1s
                 break;
             case 0x08:  // 十六进制的 8
                 printf("got '08'\n");
-                sleep(1);   // sleep 0.5s
+                sleep(1);   // sleep 1s
                 break;
             case 0x02:  // 十六进制的 2
                 printf("got '02'\n");
-                sleep(1);   // sleep 0.5s
+                sleep(1);   // sleep 1s
                 break;
             case 0x04:  // 十六进制的 4
                 printf("got '04'\n");
-                sleep(1);   // sleep 0.5s
+                sleep(1);   // sleep 1s
                 break;
             default:
                 printf("unknoWN\n");
@@ -40,8 +40,6 @@ void printInput(unsigned char arr[], int size) {
     if (arr[2] != 0x00) {
         processDirection(arr[2]);
     }
-
-    printf("\n");
 }
 
 int main() {
