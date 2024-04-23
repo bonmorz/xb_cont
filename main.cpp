@@ -5,22 +5,25 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+libusb_device **devs; //
+libusb_context *ctx = NULL; //
+libusb_device_handle *handle = NULL;
 
 int main() {
-    libusb_device **devs; //
-    libusb_context *ctx = NULL; //
-    libusb_device_handle *handle = NULL;
 
-    handle = malloc(sizeof(libusb_device_handle**));
+
+    //handle = malloc(sizeof(libusb_device_handle*));
 
 
 
 
-    int success;
+   //int success;
     
-    success = open_controller(&devs, &ctx, &handle);
+    //success = open_controller(&devs, &ctx, &handle);
 
-    free(handle);
+    int result = find_xbox_controller();
+
+    //free(handle);
 
         
 
