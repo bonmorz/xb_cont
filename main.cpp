@@ -11,7 +11,7 @@ int main() {
     libusb_context *ctx = NULL; //
     libusb_device_handle *handle = NULL;
 
-    handle = malloc(sizeof(libusb_device_handle*));
+    handle = malloc(sizeof(libusb_device_handle**));
 
 
 
