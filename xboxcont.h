@@ -10,6 +10,7 @@
 // Global variable declaration
 extern int eraseDouble;
 
+
 // Function declarations
 void processDirection(unsigned char data, int &a, int &b);
 char processFunction(unsigned char data, int &a, int &b);

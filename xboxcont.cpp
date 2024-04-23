@@ -9,6 +9,10 @@
 
 int eraseDouble=1;
 
+extern libusb_device **devs;
+extern libusb_context *ctx;
+extern libusb_device_handle *handle;
+
 
 void processDirection(unsigned char data,int &a,int &b) {
 
