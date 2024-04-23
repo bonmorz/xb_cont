@@ -9,6 +9,8 @@ int main() {
     libusb_context *ctx = NULL; //
     libusb_device_handle *handle = NULL;
 
+    libusb_device_handle **handle = malloc(sizeof(libusb_device_handle*));
+
 
     int r; // 
     ssize_t cnt; // 
@@ -66,6 +68,8 @@ int main() {
     int success;
     
     success = open_controller(&devs, &ctx, &handle);
+
+    free(handle);
 
         
 
