@@ -3,6 +3,8 @@
 #include <libusb-1.0/libusb.h>
 #include <time.h> 
 #include <unistd.h>
+#include <stdlib.h>
+
 
 int main() {
     libusb_device **devs; //
